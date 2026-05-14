@@ -1,0 +1,10 @@
+com\project\model\Media.class
+com\project\service\FileService.class
+com\project\AiMediaAppApplication.class
+com\project\service\TranscriptionService.class
+com\project\controller\FileUploadController.class
+com\project\controller\MediaController.class
+com\project\service\AIService.class
+com\project\model\MediaFile.class
+com\project\service\MediaService.class
+com\project\repository\MediaFileRepository.class

@@ -1,0 +1,50 @@
+services:
+  # 1. Database Service (MySQL) - [cite: 16, 28]
+  db:
+    image: mysql:8.0
+    container_name: media_db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: media_qa_db
+      MYSQL_ROOT_PASSWORD: Sau@123
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - ai-network
+
+  # 2. Backend Service (Spring Boot) - [cite: 12, 18]
+  backend:
+    build: ./backend
+    container_name: media_backend
+    ports:
+      - "8081:8081"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/media_qa_db?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Sau@123
+      # FIXED: Yahan variables ki jagah seedha keys daal di hain taaki warning na aaye 
+      GOOGLE_GEMINI_KEY: AIzaSyCEVsPIEi7s3Pn4999UP1Yc-x5h9xTjWSQ
+      DEEPGRAM_API_KEY: 044b298c587c970058660711cd9732dfa46f0164
+    networks:
+      - ai-network
+
+  # 3. Frontend Service (React) - [cite: 20, 21]
+  frontend:
+    build: ./media-frontend
+    container_name: media_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - ai-network
+
+networks:
+  ai-network:
+    driver: bridge

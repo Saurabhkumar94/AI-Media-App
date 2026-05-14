@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AIService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ai-media-app</a> &gt; <a href="index.source.html" class="el_package">com.project.service</a> &gt; <span class="el_source">AIService.java</span></div><h1>AIService.java</h1><pre class="source lang-java linenums">package com.project.service;
+
+import dev.langchain4j.model.openai.OpenAiChatModel;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+@Service
+<span class="fc" id="L8">public class AIService {</span>
+
+    @Value(&quot;${google.gemini.key}&quot;)
+    private String apiKey;
+
+    /**
+     * Using OpenAI-compatible interface for Gemini.
+     * This ensures the app is stable even if specific Gemini libraries fail to download. [cite: 13]
+     */
+    public String summarizeText(String text) {
+        try {
+            // Hum OpenAI ka connector use kar rahe hain jo Gemini ke server se baat karega [cite: 13]
+<span class="fc" id="L20">            OpenAiChatModel model = OpenAiChatModel.builder()</span>
+<span class="fc" id="L21">                    .apiKey(apiKey)</span>
+<span class="fc" id="L22">                    .baseUrl(&quot;https://generativelanguage.googleapis.com/v1beta/openai/&quot;) </span>
+<span class="fc" id="L23">                    .modelName(&quot;gemini-1.5-flash&quot;)</span>
+<span class="fc" id="L24">                    .build();</span>
+
+            // Task: Summarize the content of uploaded files [cite: 7, 24]
+<span class="fc" id="L27">            String prompt = &quot;Summarize the following document content in exactly 2 clear lines: &quot; + text;</span>
+
+            // AI Model call through LangChain interface
+<span class="nc" id="L30">            return model.generate(prompt);</span>
+            
+<span class="fc" id="L32">        } catch (Exception e) {</span>
+<span class="fc" id="L33">            return &quot;AI Summary Error: &quot; + e.getMessage();</span>
+        }
+    }
+
+    /**
+     * Interacts with the AI model to answer specific questions based on file content. [cite: 6]
+     */
+    public String askQuestionAboutFile(String question, String content) {
+        try {
+            // Wahi model configuration jo summarize mein use hui hai [cite: 13]
+<span class="fc" id="L43">            OpenAiChatModel model = OpenAiChatModel.builder()</span>
+<span class="fc" id="L44">                    .apiKey(apiKey)</span>
+<span class="fc" id="L45">                    .baseUrl(&quot;https://generativelanguage.googleapis.com/v1beta/openai/&quot;) </span>
+<span class="fc" id="L46">                    .modelName(&quot;gemini-1.5-flash&quot;)</span>
+<span class="fc" id="L47">                    .build();</span>
+
+            // Prompt engineering: Model ko context dena zaroori hai [cite: 13]
+<span class="fc" id="L50">            String prompt = &quot;You are a helpful AI assistant. Use the following context to answer the user's question accurately.\n\n&quot; +</span>
+                            &quot;Context (File Content): &quot; + content + &quot;\n\n&quot; +
+                            &quot;User Question: &quot; + question;
+
+            // AI Model se answer generate karwana [cite: 6]
+<span class="nc" id="L55">            return model.generate(prompt);</span>
+
+<span class="fc" id="L57">        } catch (Exception e) {</span>
+<span class="fc" id="L58">            return &quot;Chatbot Error: &quot; + e.getMessage();</span>
+        }
+    }
+
+    // --- NAYA METHOD: TIMESTAMPS EXTRACTION (Assignment Task 8 &amp; 25) ---
+
+    /**
+     * AI se transcription JSON se specific topics aur unke timestamps nikalne ke liye. 
+     */
+    public String extractTimestamps(String rawJson) {
+        try {
+<span class="fc" id="L69">            OpenAiChatModel model = OpenAiChatModel.builder()</span>
+<span class="fc" id="L70">                    .apiKey(apiKey)</span>
+<span class="fc" id="L71">                    .baseUrl(&quot;https://generativelanguage.googleapis.com/v1beta/openai/&quot;) </span>
+<span class="fc" id="L72">                    .modelName(&quot;gemini-1.5-flash&quot;)</span>
+<span class="fc" id="L73">                    .build();</span>
+
+            // AI ko Deepgram ka raw JSON dekar specific topics aur seconds nikalne ko kehna [cite: 8, 14]
+<span class="fc" id="L76">            String prompt = &quot;I will provide you a transcription JSON. Extract 3-4 key topics &quot; +</span>
+                            &quot;and their exact start time in seconds. &quot; +
+                            &quot;Format the output strictly as: Topic Name - [seconds]. \n\nJSON: &quot; + rawJson;
+
+<span class="nc" id="L80">            return model.generate(prompt);</span>
+
+<span class="fc" id="L82">        } catch (Exception e) {</span>
+<span class="fc" id="L83">            return &quot;Timestamp Extraction Error: &quot; + e.getMessage();</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

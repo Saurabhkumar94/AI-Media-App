@@ -1,0 +1,10 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+ai-media-app,com.project.controller,FileUploadController,0,135,4,16,0,32,4,10,0,4
+ai-media-app,com.project.controller,MediaController,0,33,0,4,0,9,0,4,0,2
+ai-media-app,com.project.model,Media,0,79,1,9,0,16,1,13,0,9
+ai-media-app,com.project.model,MediaFile,0,48,0,0,0,20,0,13,0,13
+ai-media-app,com.project,AiMediaAppApplication,0,8,0,0,0,3,0,2,0,2
+ai-media-app,com.project.service,MediaService,0,18,0,4,0,4,0,4,0,2
+ai-media-app,com.project.service,TranscriptionService,3,38,0,0,1,12,0,2,0,2
+ai-media-app,com.project.service,AIService,12,58,0,0,3,25,0,4,0,4
+ai-media-app,com.project.service,FileService,24,121,4,20,5,27,3,15,0,6
