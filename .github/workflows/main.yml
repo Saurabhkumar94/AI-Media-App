@@ -18,8 +18,10 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run Backend Coverage
-        # Ye part sabse important hai tests chalane ke liye
+      - name: Build and Test
         run: |
           cd backend
-          mvn clean test jacoco:report
+          # Pehle project install karenge taaki symbols mil jayein
+          mvn clean install -DskipTests
+          # Ab tests chalayenge coverage ke liye
+          mvn test jacoco:report
