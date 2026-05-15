@@ -1,4 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-ai-media-app,com.project.controller,FileUploadController,0,135,4,16,0,32,4,10,0,4
-ai-media-app,com.project.controller,MediaController,0,33,0,4,0,9,0,4,0,2
-ai-media-app,com.project.service,MediaService,0,18,0,4,0,4,0,4,0,2

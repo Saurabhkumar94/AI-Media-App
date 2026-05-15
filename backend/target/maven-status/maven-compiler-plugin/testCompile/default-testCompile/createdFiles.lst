@@ -1,7 +1,0 @@
-com\project\AiMediaAppApplicationTests.class
-com\project\controller\MediaControllerTest.class
-com\project\service\TranscriptionServiceTest.class
-com\project\service\ExtraServicesTest.class
-com\project\service\AIServiceTest.class
-com\project\service\FileServiceTest.class
-com\project\controller\FileUploadControllerTest.class

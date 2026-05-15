@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.project.service.AIServiceTest
--------------------------------------------------------------------------------
-Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.04 s -- in com.project.service.AIServiceTest
