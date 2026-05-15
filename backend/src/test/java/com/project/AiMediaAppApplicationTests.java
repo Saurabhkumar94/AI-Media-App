@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@ActiveProfiles("test") // Yeh application-test.properties ko load karega
 class AiMediaAppApplicationTests {
 
     @Autowired
@@ -50,18 +50,18 @@ class AiMediaAppApplicationTests {
     // --- Added for com.project (Main App) 100% Coverage ---
     @Test
     public void testMainMethod() {
-        // Isse AiMediaAppApplication class ki coverage green ho jayegi
+        // Sirf main method ko call karne se coverage mil jayegi
+        // System.setProperty yahan add kiya hai taki agar DB properties missing ho to error na aaye
+        System.setProperty("spring.profiles.active", "test"); 
         AiMediaAppApplication.main(new String[] {});
     }
 
     @Test
     void testFullControllerCoverage() throws Exception {
-        // Mocking the model response
         MediaFile mockFile = new MediaFile();
         mockFile.setFilePath("test.pdf");
         mockFile.setFileName("test.pdf");
         
-        // Mocking Service calls behavior
         when(fileService.saveFile(any())).thenReturn(mockFile);
         when(fileService.extractTextFromPdf(anyString())).thenReturn("sample text");
         when(aiService.summarizeText(anyString())).thenReturn("summary");
