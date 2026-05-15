@@ -13,7 +13,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.annotation.DirtiesContext; // Naya import
+import org.springframework.test.annotation.DirtiesContext;
+import javax.sql.DataSource; // Naya Import jo humne add kiya hai [cite: 2026-05-15]
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,11 +27,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test") 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) // Taki tests ek dusre se na takrayein
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AiMediaAppApplicationTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private DataSource dataSource; // Database connection ko mock karne ke liye add kiya hai [cite: 2026-05-15]
 
     @MockBean
     private FileService fileService;
@@ -54,8 +58,6 @@ class AiMediaAppApplicationTests {
         // GitHub Actions par database error se bachne ke liye try-catch ka use
         try {
             System.setProperty("spring.profiles.active", "test");
-            // Database connection failure ko avoid karne ke liye mock properties set karein
-            System.setProperty("spring.datasource.url", "jdbc:mysql://localhost:3306/ai_media_db");
             AiMediaAppApplication.main(new String[] {});
         } catch (Exception e) {
             // Agar database connection fail ho, tab bhi test coverage mil jayegi
