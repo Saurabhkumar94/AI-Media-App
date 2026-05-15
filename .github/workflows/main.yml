@@ -20,12 +20,18 @@ jobs:
           cache: maven
 
       - name: Build and Test Backend
-        working-directory: ./backend # यहाँ हमने working-directory सेट कर दी है
+        working-directory: ./backend
         run: |
-          mvn clean install -DskipTests
+          # 1. Sabse pehle source classes ko compile karke symbols generate karein
+          mvn clean compile
+          
+          # 2. Phir project ko local repository mein install karein taaki symbols link ho jayein
+          mvn install -DskipTests
+          
+          # 3. Ab actual tests aur report generate karenge
           mvn test jacoco:report
 
-  # 2. Frontend Job (Node.js) - इसे भी जोड़ना चाहिए
+  # 2. Frontend Job (Node.js)
   frontend-build:
     runs-on: ubuntu-latest
     steps:
